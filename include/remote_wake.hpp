@@ -18,11 +18,10 @@ namespace bst {
 
 namespace ipc = boost::interprocess;
 
+//------------------------------------------------------------------------------
+
 constexpr auto file_name  = "bryan-shared-test";
 constexpr auto mutex_name = "bryan_named_mutex";
-constexpr auto server_ip  = "192.168.0.100";
-
-//------------------------------------------------------------------------------
 
 class remote_machine
 {
@@ -43,7 +42,7 @@ private:
 
 //------------------------------------------------------------------------------
 
-remote_machine::remote_machine(std::string_view address)
+inline remote_machine::remote_machine(std::string_view address)
   : address_{ std::move(address) }
 {
   ipc::named_mutex mutex(ipc::open_or_create, mutex_name);
@@ -65,7 +64,7 @@ remote_machine::remote_machine(std::string_view address)
   }
 }
 
-remote_machine::~remote_machine() noexcept
+inline remote_machine::~remote_machine() noexcept
 {
   ipc::named_mutex mutex(ipc::open_or_create, mutex_name);
   ipc::scoped_lock<ipc::named_mutex> lock(mutex);
